@@ -1,0 +1,26 @@
+name: Merge
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - 'build/version.json'
+      - 'build/version.props'
+      - 'docs/**'
+      - '**.md'
+      - 'LICENSE'
+      - '.editorconfig'
+  workflow_dispatch:
+    inputs:
+      skip_publish:
+        type: boolean
+        default: true
+jobs:
+  ci:
+    uses: Novolis-Platform/novolis-workflows/.github/workflows/dotnet-merge-publish.yml@main
+    secrets: inherit
+    with:
+      # Redirect repo: implementation and GPR package live in novolis-transports.
+      skip_publish: true
+    permissions:
+      contents: read
+      packages: write

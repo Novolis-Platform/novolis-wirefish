@@ -1,0 +1,14 @@
+{
+  "packages": {
+    "Frank.WireFish": {
+      "paths": [
+        "src/Frank.WireFish/**",
+        "tests/Frank.WireFish.Tests/**",
+        "Directory.Build.props",
+        "Directory.Packages.props",
+        "global.json"
+      ],
+      "project": "src/Frank.WireFish/Frank.WireFish.csproj"
+    }
+  }
+}

@@ -1,0 +1,8 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <PackageReference Include="JetBrains.Annotations" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
+    <PackageReference Include="TUnit" />
+    <ProjectReference Include="..\..\src\Frank.WireFish\Frank.WireFish.csproj" />
+  </ItemGroup>
+</Project>
