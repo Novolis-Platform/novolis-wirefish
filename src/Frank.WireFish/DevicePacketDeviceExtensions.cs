@@ -52,8 +52,8 @@ namespace Frank.WireFish;
             if (devicePacket.Device is LibPcapLiveDevice liveDevice)
             {
                 return liveDevice.Addresses
-                    .Where(addr => addr.Addr != null && addr.Addr.ipAddress != null)
-                    .Select(addr => addr.Addr.ipAddress);
+                    .Select(addr => addr.Addr?.ipAddress)
+                    .OfType<IPAddress>();
             }
             return Enumerable.Empty<IPAddress>();
         }
@@ -79,7 +79,7 @@ namespace Frank.WireFish;
         /// </summary>
         public static string GetDeviceCaptureFilter(this DevicePacket devicePacket)
         {
-            return devicePacket.Device.Filter;
+            return devicePacket.Device.Filter ?? string.Empty;
         }
 
         /// <summary>
@@ -103,8 +103,12 @@ namespace Frank.WireFish;
         {
             if (devicePacket.Device is LibPcapLiveDevice liveDevice)
             {
-                return liveDevice.Interface.FriendlyName.Contains("Wireless", StringComparison.OrdinalIgnoreCase) ||
-                       liveDevice.Interface.FriendlyName.Contains("Wi-Fi", StringComparison.OrdinalIgnoreCase);
+                var friendlyName = liveDevice.Interface?.FriendlyName;
+                if (string.IsNullOrEmpty(friendlyName))
+                    return false;
+
+                return friendlyName.Contains("Wireless", StringComparison.OrdinalIgnoreCase) ||
+                       friendlyName.Contains("Wi-Fi", StringComparison.OrdinalIgnoreCase);
             }
             return false;
         }
@@ -116,7 +120,7 @@ namespace Frank.WireFish;
         {
             if (devicePacket.Device is LibPcapLiveDevice liveDevice)
             {
-                return liveDevice.Interface.FriendlyName;
+                return liveDevice.Interface?.FriendlyName;
             }
             return null;
         }
@@ -129,7 +133,7 @@ namespace Frank.WireFish;
         {
             if (devicePacket.Device is LibPcapLiveDevice liveDevice)
             {
-                return liveDevice.Interface.Name;
+                return liveDevice.Interface?.Name;
             }
             return null;
         }
@@ -144,7 +148,7 @@ namespace Frank.WireFish;
                 NetworkInterface[] interfaces = NetworkInterface.GetAllNetworkInterfaces();
                 foreach (NetworkInterface networkInterface in interfaces)
                 {
-                    if (networkInterface.Id == liveDevice.Interface.Name)
+                    if (networkInterface.Id == liveDevice.Interface?.Name)
                     {
                         return networkInterface;
                     }
